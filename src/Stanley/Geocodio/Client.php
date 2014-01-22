@@ -29,10 +29,21 @@ class Client
      *
      * @param string $apiKey API Key
      */
-    public function __construct($apiKey)
+    public function __construct($apiKey = null)
     {
         $this->apiKey = $apiKey;
         $this->client = $this->newGuzzleClient();
+    }
+
+    /**
+     * Setter for API Key
+     *
+     * @param string $apiKey API Key
+     * @return void
+     */
+    public function setApiKey($apiKey)
+    {
+        $this->apiKey = $apiKey;
     }
 
     /**
