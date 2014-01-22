@@ -6,7 +6,7 @@ Geocod.io PHP
         :target: https://travis-ci.org/davidstanley01/geocodio-php
 
 
-PHP wrapper for `Geocod.io geocoding API <http://geocod.io/docs/>`_.
+PHP wrapper for [Geocod.io geocoding API](http://geocod.io/docs).
 
 # Features
 
@@ -14,8 +14,7 @@ PHP wrapper for `Geocod.io geocoding API <http://geocod.io/docs/>`_.
 * Batch geocode up to 10,000 addresses at a time
 * Parse an address into its identifiable components
 
-Read the complete `Geocod.io documentation <http://geocod.io/docs/>`_ for
-service documentation.
+Read the complete [Geocod.io geocoding API](http://geocod.io/docs) for service documentation.
 
 # Installing via Composer
 
@@ -25,7 +24,7 @@ The recommended way to install Geocod.io PHP is through [Composer](http://getcom
 # Install Composer
 curl -sS https://getcomposer.org/installer | php
 
-# Add Guzzle as a dependency
+# Add Geocodio as a dependency
 php composer.phar require stanley\geocodio-php:~1.0
 ```
 
