@@ -1,0 +1,24 @@
+{
+    "name": "Geocodio Client",
+    "description": "Thin wrapper for the Geocodio API",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "David Stanley",
+            "email": "davidstanley01@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "guzzle/http": "3.7.*@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Stanley\\Geocodio\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
