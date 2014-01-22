@@ -1,6 +1,14 @@
 History
 =======
 
+1.0.3 (2014-01-22)
+------------------
+* Forgot to bump version in composer.json
+
+1.0.2 (2014-01-22)
+------------------
+* Fixed mis-named class property
+
 1.0.1 (2014-01-22)
 ------------------
 * Added license and changelog
