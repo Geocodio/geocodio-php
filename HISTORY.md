@@ -1,6 +1,10 @@
 History
 =======
 
+1.0.4 (2014-01-22)
+------------------
+* Added service provider and facade for Laravel
+
 1.0.3 (2014-01-22)
 ------------------
 * Forgot to bump version in composer.json

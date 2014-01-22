@@ -1,11 +1,9 @@
-============
 Geocod.io PHP
 ============
 
 [![Build Status](https://travis-ci.org/davidstanley01/geocodio-php.png?branch=master)](https://travis-ci.org/davidstanley01/geocodio-php)
 
-
-PHP wrapper for [Geocod.io geocoding API](http://geocod.io/docs).
+Thin PHP wrapper for [Geocod.io geocoding API](http://geocod.io/docs) that includes a service provider for Laravel.
 
 # Features
 
@@ -77,6 +75,26 @@ $body = $address->response;
 ```
 
 Soon, I'll add some helper methods so you can easily pick certain elements out.  Coming soon...
+
+## Laravel Service Provider and Facade
+A service provder and facade are available if you are using Laravel.  Once you've added the package to your composer.json file and run `php composer.phar update`, you'll need to edit the `app/config/app.php` file and add
+```php
+'Stanley\Geocodio\ServiceProviders\LaravelServiceProvider'
+```
+to the `providers` key.  Then, edit the `aliases` key and add
+```php
+'Geocodio' => 'Stanley\Geocodio\Gecodio'
+```
+to the array. Before you can use the new facade, you need to add your API key to a config file.  To do this, you can simply create a file called `geocodio.php` and put it in the `app/config` directory. By default, the service provider is looking for this file. The file only needs to contain a single element as follows
+```php
+return array(
+    'key' => 'YOUR_API_KEY'
+);
+```
+You are now ready to use the Facade like so
+```php
+$data = Geocodio::get('123 Anywhere st, chicago, il');
+```
 
 Exceptions
 ----------
