@@ -6,7 +6,7 @@ class Data
      * Response Body
      * @var object
      */
-    public $data = [];
+    public $response = [];
 
     /**
      * Class Constructor
@@ -15,6 +15,6 @@ class Data
      */
     public function __construct($data)
     {
-        $this->data = json_decode($data);
+        $this->response = json_decode($data);
     }
 }
