@@ -9,7 +9,6 @@ use Guzzle\Http\Message\Response;
 
 class Client
 {
-    const VER = '1.0.0';
     const BASE_URL = 'http://api.geocod.io/v1/';
 
     /**
