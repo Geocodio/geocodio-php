@@ -2,8 +2,7 @@
 Geocod.io PHP
 ============
 
-.. image:: https://travis-ci.org/davidstanley01/geocodio-php.png?branch=master
-        :target: https://travis-ci.org/davidstanley01/geocodio-php
+[![Build Status](https://travis-ci.org/davidstanley01/geocodio-php.png?branch=master)](https://travis-ci.org/davidstanley01/geocodio-php)
 
 
 PHP wrapper for [Geocod.io geocoding API](http://geocod.io/docs).
