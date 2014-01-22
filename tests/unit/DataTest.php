@@ -14,6 +14,6 @@ class DataTest extends BaseTest
         $json = json_encode($data);
 
         $mock = new Stanley\Geocodio\Data($json);
-        $this->assertEquals($mock->data, $data);
+        $this->assertEquals($mock->response, $data);
     }
 }
