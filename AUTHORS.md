@@ -3,7 +3,7 @@ Credits
 
 Development Lead
 ----------------
-Ben Lopatin <ben@wellfire.co>
+David Stanley
 
 Inspiration
 -----------
