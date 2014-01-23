@@ -1,6 +1,8 @@
 <?php namespace Stanley\Geocodio\ServiceProviders;
 
+use Stanley\Geocodio\Client;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Config;
 
 class LaravelServiceProvider extends ServiceProvider {
 
@@ -12,18 +14,8 @@ class LaravelServiceProvider extends ServiceProvider {
     public function register()
     {
         // Register 'geocodio' instance container to our Geocodio object
-        // Get the API key from configs if it is set
-        $key = Config::get('geocodio.key') ?: null;
-        $this->app['geocode'] = $this->app->share(function($app, $key)
-        {
-            return new Stanley\Geocodio\Client($key);
-        });
-
-        // Shortcut so developers don't need to add an Alias in app/config/app.php
-        $this->app->booting(function()
-        {
-            $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-            $loader->alias('Geocodio', 'Stanley\Geocodio\Client');
+        $this->app->bind('geocodio', function () {
+            return new Client;
         });
     }
 }

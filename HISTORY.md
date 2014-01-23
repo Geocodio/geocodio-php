@@ -4,6 +4,9 @@ History
 1.0.4 (2014-01-22)
 ------------------
 * Added service provider and facade for Laravel
+* Added method to auto-detect endpoint required for single or multiple address (not for `parse` endpoint)
+* Refactored some methods to allow for API Key to be set after instantiation via setter or optional parameter.
+* Added GeocodioException instead of using general exception
 
 1.0.3 (2014-01-22)
 ------------------

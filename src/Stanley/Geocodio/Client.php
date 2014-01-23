@@ -1,9 +1,6 @@
 <?php namespace Stanley\Geocodio;
 
 use Stanley\Geocodio\Data;
-use Stanley\Geocodio\GeocodioAuthError;
-use Stanley\Geocodio\GeocodioDataError;
-use Stanley\Geocodio\GeocodioServerError;
 use Guzzle\Http\Client as GC;
 use Guzzle\Http\Message\Response;
 
@@ -46,14 +43,27 @@ class Client
     }
 
     /**
+     * Geocode facade
+     *
+     * @param  mixed $data incoming data
+     * @param  string $key  API Key
+     * @return mixed
+     */
+    public function geocode($data, $key = null)
+    {
+        if ($key) $this->apiKey = $key;
+        return (is_string($data)) ? $this->get($data) : $this->post($data);
+    }
+    /**
      * Get Method
      *
      * @param  array  $data Data to be encoded
      * @param  string $verb URL segment to call - either 'geocode' or 'parse'
      * @return Stanley\Geocodio\Data
      */
-    public function get($data, $verb = 'geocode')
+    public function get($data, $key = null, $verb = 'geocode')
     {
+        if ($key) $this->apiKey = $key;
         $request = $this->getRequest($data, $verb);
         return $this->newDataObject($request->getBody());
     }
@@ -64,8 +74,9 @@ class Client
      * @param  array $data Data to be encoded
      * @return Stanley\Geocodio\Data
      */
-    public function post($data)
+    public function post($data, $key = null)
     {
+        if ($key) $this->apiKey = $key;
         $request = $this->bulkPost(json_encode($data));
         return $this->newDataObject($request->getBody());
     }
@@ -76,9 +87,10 @@ class Client
      * @param  array $data Data to be encoded
      * @return Stanley\Geocodio\Data
      */
-    public function parse($data)
+    public function parse($data, $key = null)
     {
-        return $this->get($data, 'parse');
+        if ($key) $this->apiKey = $key;
+        return $this->get($data, null, 'parse');
     }
 
     /**
@@ -98,6 +110,7 @@ class Client
         $request = $this->client->get(self::BASE_URL . $verb, [], [
             'query' => $params
         ]);
+
         $response = $this->client->send($request);
         return $this->checkResponse($response);
     }
@@ -133,15 +146,15 @@ class Client
         $reason = $response->getReasonPhrase();
         switch ($status) {
             case '403':
-                throw new GeocodioAuthError($reason);
+                throw new Stanley\Geocodio\GeocodioAuthError($reason);
                 break;
 
             case '422':
-                throw new GeocodioDataError($reason);
+                throw new Stanley\Geocodio\GeocodioDataError($reason);
                 break;
 
             case '500':
-                throw new GeocodioServerError($reason);
+                throw new Stanley\Geocodio\GeocodioServerError($reason);
                 break;
 
             case '200':
@@ -149,7 +162,7 @@ class Client
                 break;
 
             default:
-                throw new Exception("There was a problem with your request - $reason");
+                throw new Stanley\Geocodio\GeocodioException("There was a problem with your request - $reason");
                 break;
         }
     }
@@ -157,7 +170,7 @@ class Client
     /**
      * Create new Guzzle Client
      *
-     * @return Guzzle\Http\Client Guzzle client
+     * @return Guzzle\Http\Client
      */
     protected function newGuzzleClient()
     {
@@ -168,7 +181,7 @@ class Client
      * Create new Data object
      *
      * @param  mixed $response Response body
-     * @return Stanley\Geocodio\Data                  Data object
+     * @return Stanley\Geocodio\Data
      */
     protected function newDataObject($response)
     {

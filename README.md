@@ -59,6 +59,7 @@ $data = [
 ];
 $address = $client->post($data);
 ```
+You can also call the `$client->geocode($data)` method with either a single address as a `string` or mulitple addresses as an `array` or an `object` and the method will call the appropriate endpoint.
 
 ## Parsing a single address
 To parse an address, call the 'parse' method and pass in your data as a string
@@ -77,23 +78,13 @@ $body = $address->response;
 Soon, I'll add some helper methods so you can easily pick certain elements out.  Coming soon...
 
 ## Laravel Service Provider and Facade
-A service provder and facade are available if you are using Laravel.  Once you've added the package to your composer.json file and run `php composer.phar update`, you'll need to edit the `app/config/app.php` file and add
+A service provder and facade are available if you are using Laravel.  Once you've added the package to your composer.json file, run `php composer.phar update`. Add `'Stanley\Geocodio\ServiceProviders\LaravelServiceProvider'`to the `providers` key.  Then, edit the `aliases` key and add `'Geocodio' => 'Stanley\Geocodio\Geocodio'` to the array.
+
+You are now ready to use the Facade.  If you are using Laravel, you will need to pass your API Key as the second parameter.
 ```php
-'Stanley\Geocodio\ServiceProviders\LaravelServiceProvider'
-```
-to the `providers` key.  Then, edit the `aliases` key and add
-```php
-'Geocodio' => 'Stanley\Geocodio\Gecodio'
-```
-to the array. Before you can use the new facade, you need to add your API key to a config file.  To do this, you can simply create a file called `geocodio.php` and put it in the `app/config` directory. By default, the service provider is looking for this file. The file only needs to contain a single element as follows
-```php
-return array(
-    'key' => 'YOUR_API_KEY'
-);
-```
-You are now ready to use the Facade like so
-```php
-$data = Geocodio::get('123 Anywhere st, chicago, il');
+$key = 'YOUR_API_KEY';
+$data = Geocodio::get('123 Anywhere St, Chicago, IL', $key);
+return Response::json($data);
 ```
 
 Exceptions

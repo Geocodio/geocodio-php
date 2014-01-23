@@ -103,6 +103,7 @@ class ClientTest extends BaseTest
         $client->expects($this->once())
             ->method('get')
             ->with($this->equalTo($data),
+                   $this->equalTo(null),
                    $this->equalTo('parse'))
             ->will($this->returnValue($dataObject));
 
