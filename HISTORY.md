@@ -1,6 +1,10 @@
 History
 =======
 
+1.0.5 (2014-01-23)
+------------------
+* Specified minimum version of Guzzle at >=3.7.0
+
 1.0.4 (2014-01-22)
 ------------------
 * Added service provider and facade for Laravel
