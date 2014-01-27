@@ -1,6 +1,10 @@
 History
 =======
 
+1.0.6 (2014-01-26)
+------------------
+* Added integration tests and fixed issue where post data was being encoded twice.
+
 1.0.5 (2014-01-23)
 ------------------
 * Specified minimum version of Guzzle at >=3.7.0
