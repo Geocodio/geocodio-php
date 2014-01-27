@@ -77,7 +77,7 @@ class Client
     public function post($data, $key = null)
     {
         if ($key) $this->apiKey = $key;
-        $request = $this->bulkPost(json_encode($data));
+        $request = $this->bulkPost($data);
         return $this->newDataObject($request->getBody());
     }
 
@@ -103,15 +103,14 @@ class Client
     protected function getRequest($data, $verb)
     {
         $params = [
-            'q' => $data,
+            'q' => str_replace(' ', '+', $data),
             'api_key' => $this->apiKey
         ];
-
+        $address = urlencode(str_replace(' ', '+', $data));
         $request = $this->client->get(self::BASE_URL . $verb, [], [
             'query' => $params
         ]);
-
-        $response = $this->client->send($request);
+        $response = $request->send();
         return $this->checkResponse($response);
     }
 
@@ -125,12 +124,11 @@ class Client
     protected function bulkPost($data, $verb = 'geocode')
     {
         $url = self::BASE_URL . $verb . "?api_key=" . $this->apiKey;
-        $headers = [ 'content-type' => 'application\json' ];
+        $headers = [ 'Content-Type' => 'application/json' ];
         $payload = json_encode($data);
 
         $request = $this->client->post($url, $headers, $payload, []);
-        $response = $this->client->send($request);
-
+        $response = $request->send();
         return $this->checkResponse($response);
     }
 
