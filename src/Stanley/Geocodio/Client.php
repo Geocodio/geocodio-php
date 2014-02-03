@@ -121,8 +121,7 @@ class Client
         $request = $this->client->get(self::BASE_URL . $verb, [], [
             'query' => $params
         ]);
-
-        $response = $request->send();
+        $response = $this->client->send($request);
         return $this->checkResponse($response);
     }
 
@@ -140,7 +139,7 @@ class Client
         $payload = json_encode($data);
 
         $request = $this->client->post($url, $headers, $payload, []);
-        $response = $request->send();
+        $response = $this->client->send($request);
         return $this->checkResponse($response);
     }
 
