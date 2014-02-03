@@ -68,12 +68,33 @@ $data = '123 Anywhere St, Chicago, IL';
 $address = $client->parse($data);
 ```
 
+## Shortcut
+To make things even simpler, you can also call the `$client->geocode($data)` method with either a single address as a `string` or mulitple addresses as an `array` or an `object` and the method will call the appropriate endpoint.
+
+## Reverse Geocoding
+Geocod.io also supports reverse geocoding.  To convert a single lat/long pair into an address, call the 'reverse' method.  The lat/long pairs should be a comma-separated string.
+
+```php
+$data = "35.9746000,-77.9658000";
+$address = $client->reverse($data);
+```
+
+To do a bulk conversion, pass your lat/long pairs in an array.
+```php
+$data = ["35.9746000,-77.9658000","32.8793700,-96.6303900","33.8337100,-117.8362320","35.4171240,-80.6784760"];
+$address = $client->reverse($data);
+```
+
 ## Return Values
 The Geocod.io PHP client will return an instance of the `Stanley\Geocodio\Data` class.  The raw response body can be accessed from the `response` property. This property had the response data stored as an object.
 
 ```php
 $body = $address->response;
 ```
+
+
+
+
 
 Soon, I'll add some helper methods so you can easily pick certain elements out.  Coming soon...
 

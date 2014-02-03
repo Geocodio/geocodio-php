@@ -57,7 +57,7 @@ class Client
     /**
      * Get Method
      *
-     * @param  array  $data Data to be encoded
+     * @param  string $data Data to be encoded
      * @param  string $verb URL segment to call - either 'geocode' or 'parse'
      * @return Stanley\Geocodio\Data
      */
@@ -84,7 +84,7 @@ class Client
     /**
      * Parse method
      *
-     * @param  array $data Data to be encoded
+     * @param  string $data Data to be encoded
      * @return Stanley\Geocodio\Data
      */
     public function parse($data, $key = null)
@@ -94,10 +94,22 @@ class Client
     }
 
     /**
+     * Reverse Method
+     *
+     * @param  mixed  $data Information to encode
+     * @param  string $key  API Key
+     * @return Stanley\Geocodio\Data
+     */
+    public function reverse($data, $key = null)
+    {
+        return (is_string($data)) ? $this->get($data, $key, 'reverse') : $this->post($data, $key, 'reverse');
+    }
+
+    /**
      * Call Guzzle with Get Request
      *
-     * @param  array $data Address Data
-     * @param  string $verb The method being called - either geocode or parse
+     * @param  string $data Address Data
+     * @param  string $verb The method being called - geocode, parse, or reverse
      * @return Guzzle\Http\Message\Response
      */
     protected function getRequest($data, $verb)
@@ -106,11 +118,10 @@ class Client
             'q' => str_replace(' ', '+', $data),
             'api_key' => $this->apiKey
         ];
-        $address = urlencode(str_replace(' ', '+', $data));
         $request = $this->client->get(self::BASE_URL . $verb, [], [
             'query' => $params
         ]);
-        $response = $request->send();
+        $response = $this->client->send($request);
         return $this->checkResponse($response);
     }
 
@@ -128,7 +139,7 @@ class Client
         $payload = json_encode($data);
 
         $request = $this->client->post($url, $headers, $payload, []);
-        $response = $request->send();
+        $response = $this->client->send($request);
         return $this->checkResponse($response);
     }
 
