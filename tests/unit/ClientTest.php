@@ -77,7 +77,7 @@ class ClientTest extends BaseTest
             ->getMock();
         $client->expects($this->once())
             ->method('bulkPost')
-            ->with($this->equalTo(json_encode($data)))
+            ->with($this->equalTo($data))
             ->will($this->returnValue($returnData));
         $client->expects($this->once())
             ->method('newDataObject')
@@ -135,7 +135,8 @@ class ClientTest extends BaseTest
             ->method('get')
             ->with($this->equalTo($baseUrl),
                    $this->equalTo(array()),
-                   $this->equalTo($params));
+                   $this->equalTo($params))
+            ->will($this->returnSelf());
         $guzzle->expects($this->once())
             ->method('send')
             ->will($this->returnValue($returnData));
@@ -163,7 +164,7 @@ class ClientTest extends BaseTest
         $baseUrl = 'http://api.geocod.io/v1/geocode';
         $url = $baseUrl .'?api_key=asdf';
         $data = ['test', 'data'];
-        $headers = [ 'content-type' => 'application\json' ];
+        $headers = [ 'Content-Type' => 'application/json' ];
         $payload = json_encode($data);
 
         $returnData = $this->getMockBuilder('Guzzle\Http\Message\Response')
@@ -177,7 +178,8 @@ class ClientTest extends BaseTest
             ->method('post')
             ->with($this->equalTo($url),
                    $this->equalTo($headers),
-                   $this->equalTo($payload));
+                   $this->equalTo($payload))
+            ->will($this->returnSelf());
         $guzzle->expects($this->once())
             ->method('send')
             ->will($this->returnValue($returnData));

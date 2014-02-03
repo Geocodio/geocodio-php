@@ -1,6 +1,10 @@
 History
 =======
 
+1.1.0 (2014-02-03)
+------------------
+* Added reverse geocoding endpoint.
+
 1.0.6 (2014-01-26)
 ------------------
 * Added integration tests and fixed issue where post data was being encoded twice.
