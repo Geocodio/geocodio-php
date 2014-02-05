@@ -22,7 +22,7 @@ The recommended way to install Geocod.io PHP is through [Composer](http://getcom
 curl -sS https://getcomposer.org/installer | php
 
 # Add Geocodio as a dependency
-php composer.phar require stanley\geocodio-php:~1.0
+php composer.phar require stanley/geocodio-php:~1.0
 ```
 
 After installing, you need to require Composer's autoloader:
