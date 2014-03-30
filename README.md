@@ -85,6 +85,27 @@ $data = ["35.9746000,-77.9658000","32.8793700,-96.6303900","33.8337100,-117.8362
 $address = $client->reverse($data);
 ```
 
+## Fields
+Geocoding and reverse geocoding requests accepts an optional second parameter for fields.
+```php
+$data = '123 Anywhere St, Chicago, IL';
+$address = $client->get($data, ['cd', 'stateleg']);
+```
+
+```php
+$data = "35.9746000,-77.9658000";
+$address = $client->reverse($data, ['cd', 'stateleg']);
+```
+
+```php
+$data = [
+  '123 Anywhere St, Chicago, IL',
+  '456 Oak St, Los Angeles, CA'
+];
+$address = $client->post($data, ['cd', 'stateleg']);
+```
+
+
 ## Return Values
 The Geocod.io PHP client will return an instance of the `Stanley\Geocodio\Data` class.  The raw response body can be accessed from the `response` property. This property had the response data stored as an object.
 

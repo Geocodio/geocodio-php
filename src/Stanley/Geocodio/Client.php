@@ -49,10 +49,10 @@ class Client
      * @param  string $key  API Key
      * @return mixed
      */
-    public function geocode($data, $key = null)
+    public function geocode($data, $fields = [], $key = null)
     {
         if ($key) $this->apiKey = $key;
-        return (is_string($data)) ? $this->get($data) : $this->post($data);
+        return (is_string($data)) ? $this->get($data, $fields) : $this->post($data);
     }
     /**
      * Get Method
@@ -61,10 +61,10 @@ class Client
      * @param  string $verb URL segment to call - either 'geocode' or 'parse'
      * @return Stanley\Geocodio\Data
      */
-    public function get($data, $key = null, $verb = 'geocode')
+    public function get($data, $fields = [], $key = null, $verb = 'geocode')
     {
         if ($key) $this->apiKey = $key;
-        $request = $this->getRequest($data, $verb);
+        $request = $this->getRequest($data, $fields, $verb);
         return $this->newDataObject($request->getBody());
     }
 
@@ -74,10 +74,10 @@ class Client
      * @param  array $data Data to be encoded
      * @return Stanley\Geocodio\Data
      */
-    public function post($data, $key = null)
+    public function post($data, $fields = [], $key = null)
     {
         if ($key) $this->apiKey = $key;
-        $request = $this->bulkPost($data);
+        $request = $this->bulkPost($data, $fields);
         return $this->newDataObject($request->getBody());
     }
 
@@ -90,7 +90,7 @@ class Client
     public function parse($data, $key = null)
     {
         if ($key) $this->apiKey = $key;
-        return $this->get($data, null, 'parse');
+        return $this->get($data, [], null, 'parse');
     }
 
     /**
@@ -100,9 +100,9 @@ class Client
      * @param  string $key  API Key
      * @return Stanley\Geocodio\Data
      */
-    public function reverse($data, $key = null)
+    public function reverse($data, $fields = [], $key = null)
     {
-        return (is_string($data)) ? $this->get($data, $key, 'reverse') : $this->post($data, $key, 'reverse');
+        return (is_string($data)) ? $this->get($data, $fields, $key, 'reverse') : $this->post($data, $fields, $key, 'reverse');
     }
 
     /**
@@ -112,11 +112,12 @@ class Client
      * @param  string $verb The method being called - geocode, parse, or reverse
      * @return Guzzle\Http\Message\Response
      */
-    protected function getRequest($data, $verb)
+    protected function getRequest($data, $fields, $verb)
     {
         $params = [
-            'q' => str_replace(' ', '+', $data),
-            'api_key' => $this->apiKey
+            'q' => urlencode($data),
+            'api_key' => $this->apiKey,
+            'fields' => implode(',', $fields)
         ];
         $request = $this->client->get(self::BASE_URL . $verb, [], [
             'query' => $params
@@ -132,9 +133,9 @@ class Client
      * @param  string $verb Method to be called - should only be geocode for now
      * @return Guzzle\Http\Message\Response
      */
-    protected function bulkPost($data, $verb = 'geocode')
+    protected function bulkPost($data, $fields, $verb = 'geocode')
     {
-        $url = self::BASE_URL . $verb . "?api_key=" . $this->apiKey;
+        $url = self::BASE_URL . $verb . "?fields=" . implode(',', $fields) . "&api_key=" . $this->apiKey;
         $headers = [ 'Content-Type' => 'application/json' ];
         $payload = json_encode($data);
 

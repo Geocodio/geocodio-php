@@ -25,6 +25,7 @@ class ClientTest extends BaseTest
     public function testGetMethod()
     {
         $data = ['test', 'data'];
+        
         $dataObject = new Stanley\Geocodio\Data(json_encode($data));
 
         $returnData = $this->getMockBuilder('Guzzle\Http\Message\Response')
@@ -42,6 +43,7 @@ class ClientTest extends BaseTest
         $client->expects($this->once())
             ->method('getRequest')
             ->with($this->equalTo($data),
+                   $this->equalTo([]),
                    $this->equalTo('geocode'))
             ->will($this->returnValue($returnData));
         $client->expects($this->once())
@@ -103,6 +105,7 @@ class ClientTest extends BaseTest
         $client->expects($this->once())
             ->method('get')
             ->with($this->equalTo($data),
+                   $this->equalTo([]),
                    $this->equalTo(null),
                    $this->equalTo('parse'))
             ->will($this->returnValue($dataObject));
@@ -117,10 +120,12 @@ class ClientTest extends BaseTest
     public function testGetRequestMethod()
     {
         $baseUrl = 'http://api.geocod.io/v1/geocode';
-        $data = ['test', 'data'];
+        $data = 'test';
+        $fields = ['cd', 'stateleg'];
         $params = [
             'query' => [
                 'q' => $data,
+                'fields' => implode(',', $fields),
                 'api_key' => 'asdf',
             ]
         ];
@@ -152,7 +157,7 @@ class ClientTest extends BaseTest
         $this->setAttribute($mock, 'apiKey', 'asdf');
         $this->setAttribute($mock, 'client', $guzzle);
 
-        $response = $this->invokeMethod($mock, 'getRequest', array($data, 'geocode'));
+        $response = $this->invokeMethod($mock, 'getRequest', array($data, $fields, 'geocode'));
         $this->assertEquals($returnData, $response);
     }
 
@@ -162,7 +167,8 @@ class ClientTest extends BaseTest
     public function testBulkPostMethod()
     {
         $baseUrl = 'http://api.geocod.io/v1/geocode';
-        $url = $baseUrl .'?api_key=asdf';
+        $fields = ['cd', 'stateleg'];
+        $url = $baseUrl . '?fields=' . implode(',', $fields) . '&api_key=asdf';
         $data = ['test', 'data'];
         $headers = [ 'Content-Type' => 'application/json' ];
         $payload = json_encode($data);
@@ -195,7 +201,7 @@ class ClientTest extends BaseTest
         $this->setAttribute($mock, 'apiKey', 'asdf');
         $this->setAttribute($mock, 'client', $guzzle);
 
-        $response = $this->invokeMethod($mock, 'bulkPost', array($data, 'geocode'));
+        $response = $this->invokeMethod($mock, 'bulkPost', array($data, $fields, 'geocode'));
         $this->assertEquals($returnData, $response);
     }
 
