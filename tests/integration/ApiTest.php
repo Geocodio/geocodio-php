@@ -49,4 +49,16 @@ class ApiTest extends BaseTest
         $result = $client->post($multipleAddresses);
         $this->assertInstanceOf('Stanley\Geocodio\Data', $result);
     }
+
+    /**
+     * @test
+     */
+    public function testFields()
+    {
+        $goodAddress = '42370 Bob Hope Drive, Rancho Mirage, CA 22334';
+        $client = new Stanley\Geocodio\Client($this->apiKey);
+        $result = $client->geocode($goodAddress, ['cd', 'stateleg']);
+        $this->assertInstanceOf('Stanley\Geocodio\Data', $result);
+    }
+
 }
