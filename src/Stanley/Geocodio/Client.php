@@ -52,7 +52,7 @@ class Client
     public function geocode($data, $fields = [], $key = null)
     {
         if ($key) $this->apiKey = $key;
-        return (is_string($data)) ? $this->get($data, $fields) : $this->post($data);
+        return (is_string($data)) ? $this->get($data, $fields) : $this->post($data, $fields);
     }
     /**
      * Get Method
@@ -115,7 +115,7 @@ class Client
     protected function getRequest($data, $fields, $verb)
     {
         $params = [
-            'q' => urlencode($data),
+            'q' => $data,
             'api_key' => $this->apiKey,
             'fields' => implode(',', $fields)
         ];
