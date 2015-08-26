@@ -15,7 +15,7 @@ class LaravelServiceProvider extends ServiceProvider {
     {
         // Register 'geocodio' instance container to our Geocodio object
         $this->app->bind('geocodio', function () {
-            return new Client;
+            return new Client(env('GEOCODIO_API_KEY'));
         });
     }
 }
