@@ -1,7 +1,7 @@
 Geocod.io PHP
 ============
 
-[![Build Status](https://travis-ci.org/davidstanley01/geocodio-php.png?branch=master)](https://travis-ci.org/davidstanley01/geocodio-php)
+[![Build Status](https://travis-ci.org/Geocodio/geocodio-php.png?branch=master)](https://travis-ci.org/Geocodio/geocodio-php)
 
 Thin PHP wrapper for [Geocod.io geocoding API](http://geocod.io/docs) that includes a service provider for Laravel.
 
