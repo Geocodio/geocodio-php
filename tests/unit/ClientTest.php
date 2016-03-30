@@ -119,7 +119,7 @@ class ClientTest extends BaseTest
      */
     public function testGetRequestMethod()
     {
-        $baseUrl = 'http://api.geocod.io/v1/geocode';
+        $baseUrl = 'https://api.geocod.io/v1/geocode';
         $data = 'test';
         $fields = ['cd', 'stateleg'];
         $params = [
@@ -166,7 +166,7 @@ class ClientTest extends BaseTest
      */
     public function testBulkPostMethod()
     {
-        $baseUrl = 'http://api.geocod.io/v1/geocode';
+        $baseUrl = 'https://api.geocod.io/v1/geocode';
         $fields = ['cd', 'stateleg'];
         $url = $baseUrl . '?fields=' . implode(',', $fields) . '&api_key=asdf';
         $data = ['test', 'data'];
