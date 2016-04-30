@@ -124,8 +124,9 @@ A service provder and facade are available if you are using Laravel.  Once you'v
 
 You are now ready to use the Facade.  If you are using Laravel, you will need to pass your API Key as the second parameter.
 ```php
+$fields = [];
 $key = 'YOUR_API_KEY';
-$data = Geocodio::get('123 Anywhere St, Chicago, IL', $key);
+$data = Geocodio::get('123 Anywhere St, Chicago, IL', $fields, $key);
 return Response::json($data);
 ```
 
