@@ -36,7 +36,7 @@ Using
 
 Using the Geocod.io PHP library is super simple.
 ```php
-require_once 'vendor/autoload.php'
+require_once 'vendor/autoload.php';
 use Stanley\Geocodio\Client;
 
 // Create the new Client object by passing in your api key
