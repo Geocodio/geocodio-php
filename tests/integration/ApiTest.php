@@ -48,6 +48,7 @@ class ApiTest extends BaseTest
         $client = new Stanley\Geocodio\Client($this->apiKey);
         $result = $client->post($multipleAddresses);
         $this->assertInstanceOf('Stanley\Geocodio\Data', $result);
+        $this->assertEquals(2, count($result->response->results));
     }
 
     /**

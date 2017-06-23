@@ -1,8 +1,8 @@
 <?php namespace Stanley\Geocodio;
 
 use Stanley\Geocodio\Data;
-use Guzzle\Http\Client as GC;
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Psr7\Response;
 
 class Client
 {
@@ -16,7 +16,7 @@ class Client
 
     /**
      * Guzzle Client object
-     * @var Guzzle\Http\Client
+     * @var GuzzleHttp\Client
      */
     protected $client;
 
@@ -110,7 +110,7 @@ class Client
      *
      * @param  string $data Address Data
      * @param  string $verb The method being called - geocode, parse, or reverse
-     * @return Guzzle\Http\Message\Response
+     * @return GuzzleHttp\Psr7\Response
      */
     protected function getRequest($data, $fields, $verb)
     {
@@ -119,10 +119,11 @@ class Client
             'api_key' => $this->apiKey,
             'fields' => implode(',', $fields)
         ];
-        $request = $this->client->get(self::BASE_URL . $verb, [], [
+        
+        $response = $this->client->get($verb, [
             'query' => $params
         ]);
-        $response = $this->client->send($request);
+
         return $this->checkResponse($response);
     }
 
@@ -131,23 +132,28 @@ class Client
      *
      * @param  array $data Address data
      * @param  string $verb Method to be called - should only be geocode for now
-     * @return Guzzle\Http\Message\Response
+     * @return GuzzleHttp\Psr7\Response
      */
     protected function bulkPost($data, $fields, $verb = 'geocode')
     {
-        $url = self::BASE_URL . $verb . "?fields=" . implode(',', $fields) . "&api_key=" . $this->apiKey;
-        $headers = [ 'Content-Type' => 'application/json' ];
-        $payload = json_encode($data);
+        $params = [
+            'q' => $data,
+            'api_key' => $this->apiKey,
+            'fields' => implode(',', $fields)
+        ];
 
-        $request = $this->client->post($url, $headers, $payload, []);
-        $response = $this->client->send($request);
+        $response = $this->client->post($verb, [
+            'query' => $params,
+            'json' => $data
+        ]);
+
         return $this->checkResponse($response);
     }
 
     /**
      * Check response code and throw appropriate exception
      *
-     * @param  Guzzle\Http\Message\Respone $response Guzzle Response
+     * @param  GuzzleHttp\Psr7\Response $response Guzzle Response
      * @return mixed
      */
     protected function checkResponse(Response $response)
@@ -180,11 +186,13 @@ class Client
     /**
      * Create new Guzzle Client
      *
-     * @return Guzzle\Http\Client
+     * @return GuzzleHttp\Client
      */
     protected function newGuzzleClient()
     {
-        return new GC();
+        return new GuzzleClient([
+            'base_uri' => self::BASE_URL
+        ]);
     }
 
     /**
