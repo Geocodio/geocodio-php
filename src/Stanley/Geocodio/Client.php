@@ -77,7 +77,7 @@ class Client
     public function post($data, $fields = [], $key = null)
     {
         if ($key) $this->apiKey = $key;
-        $request = $this->bulkPost($data, $fields);
+        $request = $this->bulkPost($data, $fields, 'reverse');
         return $this->newDataObject($request->getBody());
     }
 
