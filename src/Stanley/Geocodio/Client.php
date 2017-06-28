@@ -74,10 +74,10 @@ class Client
      * @param  array $data Data to be encoded
      * @return Stanley\Geocodio\Data
      */
-    public function post($data, $fields = [], $key = null)
+    public function post($data, $fields = [], $key = null, $verb = 'geocode')
     {
         if ($key) $this->apiKey = $key;
-        $request = $this->bulkPost($data, $fields);
+        $request = $this->bulkPost($data, $fields, $verb);
         return $this->newDataObject($request->getBody());
     }
 
