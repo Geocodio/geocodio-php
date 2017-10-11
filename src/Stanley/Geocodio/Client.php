@@ -137,7 +137,6 @@ class Client
     protected function bulkPost($data, $fields, $verb = 'geocode')
     {
         $params = [
-            'q' => $data,
             'api_key' => $this->apiKey,
             'fields' => implode(',', $fields)
         ];
