@@ -1,7 +1,7 @@
 {
     "name": "stanley/geocodio-php",
     "description": "Thin wrapper for the Geocodio API",
-    "version": "1.3.1",
+    "version": "1.3.2",
     "authors": [
         {
             "name": "David Stanley",
