@@ -117,7 +117,7 @@ $body = $address->response;
 ## Laravel Service Provider and Facade
 A service provder and facade are available if you are using Laravel.  Once you've added the package to your composer.json file, run `php composer.phar update`. Add `'Stanley\Geocodio\ServiceProviders\LaravelServiceProvider'`to the `providers` key.  Then, edit the `aliases` key and add `'Geocodio' => 'Stanley\Geocodio\Geocodio'` to the array.
 
-You are now ready to use the Facade.  If you are using Laravel, you will need to pass your API Key as the second parameter.
+You are now ready to use the Facade.  If you are using Laravel, you will need to pass your API Key as the third parameter.
 ```php
 $fields = [];
 $key = 'YOUR_API_KEY';
