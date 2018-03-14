@@ -6,7 +6,7 @@ use GuzzleHttp\Psr7\Response;
 
 class Client
 {
-    // const BASE_URL = 'https://api.geocod.io/v1.3/';
+    const BASE_URL = 'https://api.geocod.io/v1.3/';
 
     /**
      * API Key
