@@ -3,6 +3,7 @@
 use Stanley\Geocodio\Data;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Response;
+use Stanley\Geocodio\Exceptions;
 
 class Client
 {
@@ -119,7 +120,7 @@ class Client
             'api_key' => $this->apiKey,
             'fields' => implode(',', $fields)
         ];
-        
+
         $response = $this->client->get($verb, [
             'query' => $params
         ]);
@@ -161,15 +162,15 @@ class Client
         $reason = $response->getReasonPhrase();
         switch ($status) {
             case '403':
-                throw new Stanley\Geocodio\GeocodioAuthError($reason);
+                throw new Exceptions\GeocodioAuthError($reason);
                 break;
 
             case '422':
-                throw new Stanley\Geocodio\GeocodioDataError($reason);
+                throw new Exceptions\GeocodioDataError($reason);
                 break;
 
             case '500':
-                throw new Stanley\Geocodio\GeocodioServerError($reason);
+                throw new Exceptions\GeocodioServerError($reason);
                 break;
 
             case '200':
@@ -177,7 +178,7 @@ class Client
                 break;
 
             default:
-                throw new Stanley\Geocodio\GeocodioException("There was a problem with your request - $reason");
+                throw new Exceptions\GeocodioException("There was a problem with your request - $reason");
                 break;
         }
     }
