@@ -24,11 +24,12 @@ class Client
      * Class constructor
      *
      * @param string $apiKey API Key
+     * @param GuzzleHttp\Client $client Guzzle Client object
      */
-    public function __construct($apiKey = null)
+    public function __construct($apiKey = null, GuzzleClient $client = null)
     {
         $this->apiKey = $apiKey;
-        $this->client = $this->newGuzzleClient();
+        $this->client = $client ?: $this->newGuzzleClient();
     }
 
     /**
