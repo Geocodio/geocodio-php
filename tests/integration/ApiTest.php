@@ -41,8 +41,8 @@ class ApiTest extends BaseTest
         $result = $client->reverse($multipleLocations);
         $this->assertInstanceOf('Stanley\Geocodio\Data', $result);
         $this->assertEquals(2, count($result->response->results));
-        $this->assertEquals('nearest_street', $result->response->results[0]->response->results[0]->accuracy_type);
-        $this->assertEquals('nearest_street', $result->response->results[1]->response->results[0]->accuracy_type);
+        $this->assertEquals('rooftop', $result->response->results[0]->response->results[0]->accuracy_type);
+        $this->assertEquals('rooftop', $result->response->results[1]->response->results[0]->accuracy_type);
     }
 
     public function testParseAddress()

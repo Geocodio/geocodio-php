@@ -6,13 +6,19 @@ use GuzzleHttp\Psr7\Response;
 
 class Client
 {
-    const BASE_URL = 'https://api.geocod.io/v1.3/';
+    const BASE_URL = 'https://%s/v1.3/';
 
     /**
      * API Key
      * @var string
      */
     protected $apiKey;
+
+    /**
+     * Geocodio API hostname
+     * @var string
+     */
+    protected $hostname;
 
     /**
      * Guzzle Client object
@@ -25,9 +31,10 @@ class Client
      *
      * @param string $apiKey API Key
      */
-    public function __construct($apiKey = null)
+    public function __construct($apiKey = null, $hostname = 'api.geocod.io')
     {
         $this->apiKey = $apiKey;
+        $this->hostname = $hostname;
         $this->client = $this->newGuzzleClient();
     }
 
@@ -189,8 +196,10 @@ class Client
      */
     protected function newGuzzleClient()
     {
+        $baseUrl = sprintf(self::BASE_URL, $this->hostname);
+        
         return new GuzzleClient([
-            'base_uri' => self::BASE_URL
+            'base_uri' => $baseUrl
         ]);
     }
 
