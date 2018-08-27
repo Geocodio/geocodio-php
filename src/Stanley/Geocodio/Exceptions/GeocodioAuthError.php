@@ -1,3 +1,5 @@
-<?php namespace Stanley\Geocodio\Exception;
+<?php
+namespace Stanley\Geocodio\Exception;
 
-class GeocodioAuthError extends Exception {}
+class GeocodioAuthError extends Exception
+{}

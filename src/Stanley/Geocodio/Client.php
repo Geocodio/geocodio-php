@@ -126,7 +126,7 @@ class Client
             'api_key' => $this->apiKey,
             'fields' => implode(',', $fields)
         ];
-        
+
         $response = $this->client->get($verb, [
             'query' => $params
         ]);
@@ -166,9 +166,10 @@ class Client
     {
         $status = $response->getStatusCode();
         $reason = $response->getReasonPhrase();
+        die(d($status,$reason));
         switch ($status) {
             case '403':
-                throw new Stanley\Geocodio\GeocodioAuthError($reason);
+                throw new Stanley\Geocodio\GeocodioAuthError($reason)
                 break;
 
             case '422':
@@ -197,7 +198,7 @@ class Client
     protected function newGuzzleClient()
     {
         $baseUrl = sprintf(self::BASE_URL, $this->hostname);
-        
+
         return new GuzzleClient([
             'base_uri' => $baseUrl
         ]);
