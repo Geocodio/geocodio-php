@@ -212,43 +212,6 @@ class Client
     }
 
     /**
-     * Check response code and throw appropriate exception
-     *
-     * @param  GuzzleHttp\Psr7\Response $response Guzzle Response
-     * @return mixed
-     */
-    protected function checkResponse(Response $response)
-    {
-        $status = $response->getStatusCode();
-        $reason = $response->getReasonPhrase();
-        // die(d($status, $reason));
-
-        switch ($status) {
-            case '403':
-                throw new Stanley\Geocodio\Exception\GeocodioAuthError($reason);
-                break;
-
-            case '422':
-                die('yo');
-                throw new Stanley\Geocodio\Exception\GeocodioDataError($reason);
-                break;
-
-            case '500':
-                throw new Stanley\Geocodio\Exception\GeocodioServerError($reason);
-                break;
-
-            case '200':
-                return $response;
-                break;
-
-            default:
-                throw new Stanley\Geocodio\Exception\GeocodioException("There was a problem with your request - $reason");
-                break;
-        }
-
-    }
-
-    /**
      * Create new Guzzle Client
      *
      * @return GuzzleHttp\Client
