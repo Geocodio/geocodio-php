@@ -169,7 +169,7 @@ class Client
         die(d($status,$reason));
         switch ($status) {
             case '403':
-                throw new Stanley\Geocodio\GeocodioAuthError($reason)
+                throw new Stanley\Geocodio\GeocodioAuthError($reason);
                 break;
 
             case '422':
