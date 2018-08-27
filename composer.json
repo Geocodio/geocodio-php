@@ -20,8 +20,9 @@
         "phpunit/phpunit": "^5"
     },
     "autoload": {
-        "psr-4": {
-            "Stanley\\Geocodio\\": "src/Stanley/Geocodio/"
+        "psr-0": {
+            "Stanley\\Geocodio\\": "src/"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
