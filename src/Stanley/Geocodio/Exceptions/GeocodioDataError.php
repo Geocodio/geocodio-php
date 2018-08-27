@@ -1,13 +1,13 @@
 <?php
 namespace Stanley\Geocodio\Exception;
 
-class GeocodioDataError extends Exception
+class GeocodioDataError extends \Exception
 {
 
-    public function __construct($reason)
+    public function __construct($response)
     {
-        $message  = $reason->getMessage();
-        $code     = $reason->getStatusCode();
+        $message  = $response->getBody()->getContents();
+        $code     = $response->getStatusCode();
         $previous = null;
         parent::__construct($message, $code, $previous);
     }

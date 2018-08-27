@@ -1,5 +1,5 @@
 {
-    "name": "anthropos9/geocodio-php",
+    "name": "stanley/geocodio-php",
     "description": "Thin wrapper for the Geocodio API",
     "license": "MIT",
     "authors": [

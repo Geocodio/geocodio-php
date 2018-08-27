@@ -1,8 +1,13 @@
 <?php namespace Stanley\Geocodio;
 
-use Stanley\Geocodio\Data;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
+use Stanley\Geocodio\Data;
+use Stanley\Geocodio\Exception\GeocodioAuthError;
+use Stanley\Geocodio\Exception\GeocodioDataError;
+use Stanley\Geocodio\Exception\GeocodioException;
+use Stanley\Geocodio\Exception\GeocodioServerError;
 
 class Client
 {
@@ -33,9 +38,9 @@ class Client
      */
     public function __construct($apiKey = null, $hostname = 'api.geocod.io')
     {
-        $this->apiKey = $apiKey;
+        $this->apiKey   = $apiKey;
         $this->hostname = $hostname;
-        $this->client = $this->newGuzzleClient();
+        $this->client   = $this->newGuzzleClient();
     }
 
     /**
@@ -58,9 +63,14 @@ class Client
      */
     public function geocode($data, $fields = [], $key = null)
     {
-        if ($key) $this->apiKey = $key;
+
+        if ($key) {
+            $this->apiKey = $key;
+        }
+
         return (is_string($data)) ? $this->get($data, $fields) : $this->post($data, $fields);
     }
+
     /**
      * Get Method
      *
@@ -70,7 +80,11 @@ class Client
      */
     public function get($data, $fields = [], $key = null, $verb = 'geocode')
     {
-        if ($key) $this->apiKey = $key;
+
+        if ($key) {
+            $this->apiKey = $key;
+        }
+
         $request = $this->getRequest($data, $fields, $verb);
         return $this->newDataObject($request->getBody());
     }
@@ -83,7 +97,11 @@ class Client
      */
     public function post($data, $fields = [], $key = null, $verb = 'geocode')
     {
-        if ($key) $this->apiKey = $key;
+
+        if ($key) {
+            $this->apiKey = $key;
+        }
+
         $request = $this->bulkPost($data, $fields, $verb);
         return $this->newDataObject($request->getBody());
     }
@@ -96,7 +114,11 @@ class Client
      */
     public function parse($data, $key = null)
     {
-        if ($key) $this->apiKey = $key;
+
+        if ($key) {
+            $this->apiKey = $key;
+        }
+
         return $this->get($data, [], null, 'parse');
     }
 
@@ -121,17 +143,33 @@ class Client
      */
     protected function getRequest($data, $fields, $verb)
     {
-        $params = [
-            'q' => $data,
-            'api_key' => $this->apiKey,
-            'fields' => implode(',', $fields)
-        ];
+        try {
+            $params = [
+                'q'       => $data,
+                'api_key' => $this->apiKey,
+                'fields'  => implode(',', $fields),
+            ];
 
-        $response = $this->client->get($verb, [
-            'query' => $params
-        ]);
+            $response = $this->client->get($verb, [
+                'query' => $params,
+            ]);
+            return $response;
+        } catch (RequestException $e) {
+            $statusCode = $e->getResponse()->getStatusCode();
+            $reason     = $e->getResponse()->getReasonPhrase();
 
-        return $this->checkResponse($response);
+            if ($statusCode == 422) {
+                throw new GeocodioDataError($e->getResponse());
+            } elseif ($statusCode == 403) {
+                throw new GeocodioAuthError($e->getResponse());
+            } else {
+                throw new GeocodioException("There was a problem with your request - {$reason}");
+            }
+
+        } catch (ServerException $e) {
+            throw new GeocodioServerError($e->getResponse());
+        }
+
     }
 
     /**
@@ -143,17 +181,34 @@ class Client
      */
     protected function bulkPost($data, $fields, $verb = 'geocode')
     {
-        $params = [
-            'api_key' => $this->apiKey,
-            'fields' => implode(',', $fields)
-        ];
+        try {
+            $params = [
+                'api_key' => $this->apiKey,
+                'fields'  => implode(',', $fields),
+            ];
 
-        $response = $this->client->post($verb, [
-            'query' => $params,
-            'json' => $data
-        ]);
+            $response = $this->client->post($verb, [
+                'query' => $params,
+                'json'  => $data,
+            ]);
 
-        return $this->checkResponse($response);
+            return $response;
+        } catch (RequestException $e) {
+            $statusCode = $e->getResponse()->getStatusCode();
+            $reason     = $e->getResponse()->getReasonPhrase();
+
+            if ($statusCode == 422) {
+                throw new GeocodioDataError($e->getResponse());
+            } elseif ($statusCode == 403) {
+                throw new GeocodioAuthError($e->getResponse());
+            } else {
+                throw new GeocodioException("There was a problem with your request - " . $reason);
+            }
+
+        } catch (ServerException $e) {
+            throw new GeocodioServerError($e->getResponse());
+        }
+
     }
 
     /**
@@ -166,18 +221,20 @@ class Client
     {
         $status = $response->getStatusCode();
         $reason = $response->getReasonPhrase();
-        die(d($status,$reason));
+        // die(d($status, $reason));
+
         switch ($status) {
             case '403':
-                throw new Stanley\Geocodio\GeocodioAuthError($reason);
+                throw new Stanley\Geocodio\Exception\GeocodioAuthError($reason);
                 break;
 
             case '422':
-                throw new Stanley\Geocodio\GeocodioDataError($reason);
+                die('yo');
+                throw new Stanley\Geocodio\Exception\GeocodioDataError($reason);
                 break;
 
             case '500':
-                throw new Stanley\Geocodio\GeocodioServerError($reason);
+                throw new Stanley\Geocodio\Exception\GeocodioServerError($reason);
                 break;
 
             case '200':
@@ -185,9 +242,10 @@ class Client
                 break;
 
             default:
-                throw new Stanley\Geocodio\GeocodioException("There was a problem with your request - $reason");
+                throw new Stanley\Geocodio\Exception\GeocodioException("There was a problem with your request - $reason");
                 break;
         }
+
     }
 
     /**
@@ -200,7 +258,7 @@ class Client
         $baseUrl = sprintf(self::BASE_URL, $this->hostname);
 
         return new GuzzleClient([
-            'base_uri' => $baseUrl
+            'base_uri' => $baseUrl,
         ]);
     }
 
@@ -214,4 +272,5 @@ class Client
     {
         return new Data($response);
     }
+
 }
