@@ -1,5 +1,5 @@
 <?php
-namespace Stanley\Geocodio\Exception;
+namespace Stanley\Geocodio\Exceptions;
 
 class GeocodioServerError extends \Exception
 {

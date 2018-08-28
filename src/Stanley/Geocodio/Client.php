@@ -4,10 +4,10 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
 use Stanley\Geocodio\Data;
-use Stanley\Geocodio\Exception\GeocodioAuthError;
-use Stanley\Geocodio\Exception\GeocodioDataError;
-use Stanley\Geocodio\Exception\GeocodioException;
-use Stanley\Geocodio\Exception\GeocodioServerError;
+use Stanley\Geocodio\Exceptions\GeocodioAuthError;
+use Stanley\Geocodio\Exceptions\GeocodioDataError;
+use Stanley\Geocodio\Exceptions\GeocodioException;
+use Stanley\Geocodio\Exceptions\GeocodioServerError;
 
 class Client
 {
