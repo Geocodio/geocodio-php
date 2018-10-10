@@ -3,16 +3,23 @@
 use Stanley\Geocodio\Data;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Response;
+use Stanley\Geocodio\Exceptions;
 
 class Client
 {
-    const BASE_URL = 'https://api.geocod.io/v1.3/';
+    const BASE_URL = 'https://%s/v1.3/';
 
     /**
      * API Key
      * @var string
      */
     protected $apiKey;
+
+    /**
+     * Geocodio API hostname
+     * @var string
+     */
+    protected $hostname;
 
     /**
      * Guzzle Client object
@@ -24,11 +31,13 @@ class Client
      * Class constructor
      *
      * @param string $apiKey API Key
+     * @param string $hostname
      * @param GuzzleHttp\Client $client Guzzle Client object
      */
-    public function __construct($apiKey = null, GuzzleClient $client = null)
+    public function __construct($apiKey = null, $hostname = 'api.geocod.io', GuzzleClient $client = null)
     {
         $this->apiKey = $apiKey;
+        $this->hostname = $hostname;
         $this->client = $client ?: $this->newGuzzleClient();
     }
 
@@ -120,7 +129,7 @@ class Client
             'api_key' => $this->apiKey,
             'fields' => implode(',', $fields)
         ];
-        
+
         $response = $this->client->get($verb, [
             'query' => $params
         ]);
@@ -162,15 +171,15 @@ class Client
         $reason = $response->getReasonPhrase();
         switch ($status) {
             case '403':
-                throw new Stanley\Geocodio\GeocodioAuthError($reason);
+                throw new Exceptions\GeocodioAuthError($reason);
                 break;
 
             case '422':
-                throw new Stanley\Geocodio\GeocodioDataError($reason);
+                throw new Exceptions\GeocodioDataError($reason);
                 break;
 
             case '500':
-                throw new Stanley\Geocodio\GeocodioServerError($reason);
+                throw new Exceptions\GeocodioServerError($reason);
                 break;
 
             case '200':
@@ -178,7 +187,7 @@ class Client
                 break;
 
             default:
-                throw new Stanley\Geocodio\GeocodioException("There was a problem with your request - $reason");
+                throw new Exceptions\GeocodioException("There was a problem with your request - $reason");
                 break;
         }
     }
@@ -190,8 +199,10 @@ class Client
      */
     protected function newGuzzleClient()
     {
+        $baseUrl = sprintf(self::BASE_URL, $this->hostname);
+        
         return new GuzzleClient([
-            'base_uri' => self::BASE_URL
+            'base_uri' => $baseUrl
         ]);
     }
 
