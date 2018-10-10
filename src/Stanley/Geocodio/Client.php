@@ -31,12 +31,14 @@ class Client
      * Class constructor
      *
      * @param string $apiKey API Key
+     * @param string $hostname
+     * @param GuzzleHttp\Client $client Guzzle Client object
      */
-    public function __construct($apiKey = null, $hostname = 'api.geocod.io')
+    public function __construct($apiKey = null, $hostname = 'api.geocod.io', GuzzleClient $client = null)
     {
         $this->apiKey = $apiKey;
         $this->hostname = $hostname;
-        $this->client = $this->newGuzzleClient();
+        $this->client = $client ?: $this->newGuzzleClient();
     }
 
     /**
