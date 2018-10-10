@@ -1,3 +1,3 @@
-<?php namespace Stanley\Geocodio;
+<?php namespace Stanley\Geocodio\Exceptions;
 
-class GeocodioDataError extends Exception {}
+class GeocodioDataError extends \Exception {}
