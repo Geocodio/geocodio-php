@@ -35,12 +35,14 @@ class Client
      * Class constructor
      *
      * @param string $apiKey API Key
+     * @param string $hostname
+     * @param GuzzleHttp\Client $client Guzzle Client object
      */
-    public function __construct($apiKey = null, $hostname = 'api.geocod.io')
+    public function __construct($apiKey = null, $hostname = 'api.geocod.io', GuzzleClient $client = null)
     {
         $this->apiKey   = $apiKey;
         $this->hostname = $hostname;
-        $this->client   = $this->newGuzzleClient();
+        $this->client = $client ?: $this->newGuzzleClient();
     }
 
     /**
@@ -153,6 +155,7 @@ class Client
             $response = $this->client->get($verb, [
                 'query' => $params,
             ]);
+          
             return $response;
         } catch (RequestException $e) {
             $statusCode = $e->getResponse()->getStatusCode();
@@ -165,11 +168,9 @@ class Client
             } else {
                 throw new GeocodioException("There was a problem with your request - {$reason}");
             }
-
         } catch (ServerException $e) {
             throw new GeocodioServerError($e->getResponse());
         }
-
     }
 
     /**
@@ -204,11 +205,9 @@ class Client
             } else {
                 throw new GeocodioException("There was a problem with your request - " . $reason);
             }
-
         } catch (ServerException $e) {
             throw new GeocodioServerError($e->getResponse());
         }
-
     }
 
     /**
