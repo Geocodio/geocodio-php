@@ -1,3 +1,7 @@
+# DEPRECATED
+
+This library has been replaced by https://github.com/Geocodio/geocodio-library-php
+
 geocod.io PHP
 ============
 
